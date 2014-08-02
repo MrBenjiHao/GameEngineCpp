@@ -56,31 +56,6 @@ int QuadTree::getIndex(Entity* entity){
 	return -1;
 }
 
-//void QuadTree::insert(Entity* entity){
-//	int index = getIndex(entity);
-//
-//	// QuadTree has no children
-//	if(nodes.size() == 0){
-//		// If the list isn't full
-//		if(entities.size() <= MAX_OBJECTS) entities.push_back(entity);
-//		// If the list is full
-//		else{
-//			// Split only if the max tree height hasn't been reached
-//			// Then insert entity into node with corresponding index
-//			if(LEVEL <= MAX_LEVELS && index != -1){
-//				split();
-//				nodes[index].insert(entity);
-//			}
-//			// If the height has been maxed, add entity to current list, regardless of max capacity
-//			// Also if index equal to -1, just add entity to current list
-//			else entities.push_back(entity);
-//		}
-//	}
-//	// QuadTree has children
-//	// Insert entity into node with corresponding index
-//	else nodes[index].insert(entity); // Recursively does the whole process until it gets added to a node
-//}
-
 void QuadTree::insert(Entity* entity){
 	int index;
 	if(nodes.size() != 0){
@@ -108,27 +83,6 @@ void QuadTree::insert(Entity* entity){
 		}
 	}
 }
-
-//std::vector<Entity*> QuadTree::retrieve(Entity* entity){
-//	// Check which node the entity belongs to
-//	int index = getIndex(entity);
-//	// vector pointer to current node list
-//	std::vector<QuadTree>* nodesPointer = &nodes;
-//
-//	if(index == -1) return entities;
-//	else{
-//		// While the node still has children
-//		// Set the list pointer equal to the current node list
-//		while(nodesPointer->size() != 0 && index != -1){
-//			// getting the nodes at the current index
-//			nodesPointer = &nodesPointer->at(index).nodes;
-//			index = nodesPointer->at(index).getIndex(entity);
-//		}
-//	}
-//
-//	// Then return the node's entity list
-//	return nodesPointer->at(index).entities;
-//}
 
 std::vector<Entity*> QuadTree::retrieve(Entity* entity){
 	std::vector<Entity*> returnObjects = entities;

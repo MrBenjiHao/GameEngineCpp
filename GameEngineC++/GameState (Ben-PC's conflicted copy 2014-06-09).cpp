@@ -6,7 +6,7 @@
 #include "Map.h"
 
 GameState::GameState(Core* core) 
-	: core(core), ticks(0), gameOver(false), player(core->WIDTH / 2, core->HEIGHT / 2, 32, 32, this){
+	: core(core), ticks(0), gameOver(false){
 
 	loadTextures();
 	init();
@@ -15,10 +15,13 @@ GameState::GameState(Core* core)
 }
 
 GameState::~GameState(){
-}
+	delete player;
+}	
 
 void GameState::init(){
 	initSlash();
+
+	player = new Player(core->WIDTH / 2, core->HEIGHT / 2, 32, 32, this);
 
 	map = Map(this);
 
@@ -28,18 +31,18 @@ void GameState::init(){
 void GameState::update(){
 	ticks++;
 	if(!gameOver){
-		player.update();
+		player->update();
 		for(int i = 0; i < entities.size(); i++){
 			entities[i]->update();
 		}
-		spawnEnemies(3, 1);
+		spawnEnemies(2);
 		removeEntities();
 	}
 }
 
 void GameState::render(sf::RenderWindow* window){
 	map.render(window);
-	player.render(window);
+	player->render(window);
 	for(int i = 0; i < entities.size(); i++){
 		entities[i]->render(window);
 	}
@@ -54,6 +57,7 @@ void GameState::removeEntities(){
 			delete entities[i];
 			entities[i] = NULL;
 			entities.erase(entities.begin() + i);
+			i--;
 		}
 	}
 }
@@ -62,10 +66,9 @@ void GameState::loadTextures(){
 	mainSheet.loadFromFile("Resources/SpriteSheet.png");
 }
 
-void GameState::spawnEnemies(int rate, int perSec){
-	perSec *= 60;
-	if(rate > perSec) rate = perSec;
-	if(ticks % (perSec / rate) == 0){
+void GameState::spawnEnemies(int rate){
+	if(rate > 180) rate = 180;
+	if(ticks % (180 / rate) == 0){
 		entities.push_back(new Enemy((rand() % core->WIDTH), (rand() % core->HEIGHT), 32, 32, this));
 	}
 }
@@ -84,5 +87,5 @@ void GameState::initSlash(){
 }
 
 Player GameState::getPlayer(){
-	return player;
+	return *player;
 }

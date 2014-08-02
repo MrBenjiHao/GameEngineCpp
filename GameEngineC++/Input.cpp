@@ -37,7 +37,6 @@ void Input::toggle(sf::Keyboard::Key key, bool toggle){
 	case(sf::Keyboard::F):
 		F.toggle(toggle);
 		break;
-
 	}
 }
 

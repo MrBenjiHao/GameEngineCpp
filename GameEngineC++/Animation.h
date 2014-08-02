@@ -13,6 +13,7 @@ private:
 	std::vector<sf::IntRect> frames;
 	Entity* entity;
 public:
+	Animation(){};
 	Animation(Entity* entity);
 
 	void addFrame(int x, int y, int width, int height);

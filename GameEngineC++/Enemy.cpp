@@ -12,7 +12,7 @@ Enemy::Enemy(float x, float y, int width, int height, GameState* gameState)
 	sprite.setOrigin(width / 2, height / 2);
 
 	loadSprite(3 * width, 0 * height, width, height);
-	setSpeed(1.5);
+	setSpeed(2.5);
 
 	setAnimations();
 
@@ -134,7 +134,7 @@ void Enemy::attack(Player* player, float newAngle){
 			}
 			if(collidesWith(player, true)){
 				if(!player->dashing){
-					gameState->gameOver = true;
+					//gameState->gameOver = true;
 					gameState->sounds.hit_01.play();
 				}
 			}

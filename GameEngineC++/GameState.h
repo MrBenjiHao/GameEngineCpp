@@ -3,17 +3,18 @@
 #include <vector>
 #include "SFML/Graphics.hpp"
 #include "SoundManager.h"
+#include "Map.h"
+#include "Player.h"
 
 class Core;
 class Player;
 class Entity;
-class Map;
 
 class GameState{
 private:
 	void loadTextures();
 	void init();
-	Player* player;
+	Player player;
 public:
 	sf::RectangleShape slash;
 	sf::Texture mainSheet;
@@ -21,7 +22,7 @@ public:
 	std::vector<sf::RectangleShape> slashes;
 	SoundManager sounds;
 	Core* core;
-	Map* map;
+	Map map;
 	int ticks;
 	bool gameOver;
 
@@ -31,8 +32,9 @@ public:
 	void update();
 	void render(sf::RenderWindow* window);
 	void removeEntities();
-	void spawnEnemies(int rate);
+	void spawnEnemies(int rate, int perSec);
 	void spawnParticle(int x, int y, float angle);
+	void initSlash();
 	Player getPlayer();
 };
 

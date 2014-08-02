@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "Entity.h"
+#include "Animation.h"
 
 class Animation;
 
@@ -16,7 +17,7 @@ private:
 	sf::Vector2i position;
 	sf::Sprite sword;
 	Animation* move;
-	Animation* down, *up, *left, *right;
+	Animation down, up, left, right;
 
 	void movement();
 	void setAnimations();

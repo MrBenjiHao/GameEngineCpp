@@ -24,6 +24,8 @@ public:
 	sf::Sound slashes[4];
 
 	SoundManager();
+private:
+	void initSounds();
 };
 
 #endif

@@ -26,16 +26,14 @@ void Core::start(){
 	double FPS_TIME = (double) clock.getElapsedTime().asMilliseconds();
 	double prevTime = (double) clock.getElapsedTime().asMilliseconds();
 	double currTime;
-	double delta = (1.0 / 60.0) * 1000.0;
-	double maxTimeDiff = 0.5 * 1000.0;
+	double delta = 1000.0 / 60.0;
 
 	while(window.isOpen()){
 		currTime = (double) clock.getElapsedTime().asMilliseconds();
-		if(currTime - prevTime > maxTimeDiff) prevTime = currTime;
 		if(currTime >= prevTime){
 			update();
 			prevTime += delta;
-			if(currTime < prevTime) render(&window);
+			if(currTime < prevTime && ticks % (60 / 60) == 0) render(&window);
 		}
 		else sf::sleep(sf::milliseconds((prevTime - currTime)));
 
@@ -77,7 +75,6 @@ void Core::update(){
 
 void Core::render(sf::RenderWindow* window){
 	if(delay <= 0){
-	//window->clear(sf::Color(87, 101, 127, 255));
 	window->clear(sf::Color::Black);
 	gameState->render(window);
 	window->display();
@@ -86,9 +83,9 @@ void Core::render(sf::RenderWindow* window){
 	else delay--;
 }
 
-int main(){
-	system("COLOR 2");
-
+int main(int argc, char* argv[]){
 	Core core;
+
+	//std::cin.get();
 	return 0;
 }

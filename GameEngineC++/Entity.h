@@ -3,8 +3,8 @@
 #include "GameObject.h"
 
 #define PI 3.14159265358979323846
-#define radians (PI / 180)
-#define degrees (180 / PI)
+const float radians = (PI / 180);
+const float degrees = (180 / PI);
 
 class GameState;
 

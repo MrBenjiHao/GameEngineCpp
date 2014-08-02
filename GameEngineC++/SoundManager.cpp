@@ -1,6 +1,10 @@
 #include "SoundManager.h"
 
 SoundManager::SoundManager(){
+	initSounds();
+}
+
+void SoundManager::initSounds(){
 	DASH_01.loadFromFile("Resources/dash03.wav");
 	DASH_02.loadFromFile("Resources/dash04.wav");
 	SLASH_01.loadFromFile("Resources/slash01.wav");

@@ -8,9 +8,8 @@ class GameState;
 
 class Map{
 public:
-	Map(){};
 	Map(GameState* gameState);
-
+	Map(){};
 	GameState* gameState;
 	std::vector<sf::RectangleShape> tiles;
 

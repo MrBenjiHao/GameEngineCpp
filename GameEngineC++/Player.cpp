@@ -24,8 +24,8 @@ Player::Player(float x, float y, int width, int height, GameState* gameState)
 void Player::update(){
 	Entity::update();
 
-	move->update();
 	movement();
+	move->update();
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
 		x = gameState->core->WIDTH / 2;
@@ -42,35 +42,35 @@ void Player::render(sf::RenderWindow* window){
 void Player::setAnimations(){
 	int frameSpeed = 8;
 
-	up = new Animation(this);
-	up->setAnimateSpeed(frameSpeed);
-	up->addFrame(1 * 32, 3 * 32, 32, 32);
-	up->addFrame(0 * 32, 3 * 32, 32, 32);
-	up->addFrame(1 * 32, 3 * 32, 32, 32);
-	up->addFrame(2 * 32, 3 * 32, 32, 32);
+	up = Animation(this);
+	up.setAnimateSpeed(frameSpeed);
+	up.addFrame(1 * 32, 3 * 32, 32, 32);
+	up.addFrame(0 * 32, 3 * 32, 32, 32);
+	up.addFrame(1 * 32, 3 * 32, 32, 32);
+	up.addFrame(2 * 32, 3 * 32, 32, 32);
 
-	down = new Animation(this);
-	down->setAnimateSpeed(frameSpeed);
-	down->addFrame(1 * 32, 0 * 32, 32, 32);
-	down->addFrame(0 * 32, 0 * 32, 32, 32);
-	down->addFrame(1 * 32, 0 * 32, 32, 32);
-	down->addFrame(2 * 32, 0 * 32, 32, 32);
+	down = Animation(this);
+	down.setAnimateSpeed(frameSpeed);
+	down.addFrame(1 * 32, 0 * 32, 32, 32);
+	down.addFrame(0 * 32, 0 * 32, 32, 32);
+	down.addFrame(1 * 32, 0 * 32, 32, 32);
+	down.addFrame(2 * 32, 0 * 32, 32, 32);
 
-	left = new Animation(this);
-	left->setAnimateSpeed(frameSpeed);
-	left->addFrame(1 * 32, 1 * 32, 32, 32);
-	left->addFrame(0 * 32, 1 * 32, 32, 32);
-	left->addFrame(1 * 32, 1 * 32, 32, 32);
-	left->addFrame(2 * 32, 1 * 32, 32, 32);
+	left = Animation(this);
+	left.setAnimateSpeed(frameSpeed);
+	left.addFrame(1 * 32, 1 * 32, 32, 32);
+	left.addFrame(0 * 32, 1 * 32, 32, 32);
+	left.addFrame(1 * 32, 1 * 32, 32, 32);
+	left.addFrame(2 * 32, 1 * 32, 32, 32);
 
-	right = new Animation(this);
-	right->setAnimateSpeed(frameSpeed);
-	right->addFrame(1 * 32, 2 * 32, 32, 32);
-	right->addFrame(0 * 32, 2 * 32, 32, 32);
-	right->addFrame(1 * 32, 2 * 32, 32, 32);
-	right->addFrame(2 * 32, 2 * 32, 32, 32);
+	right = Animation(this);
+	right.setAnimateSpeed(frameSpeed);
+	right.addFrame(1 * 32, 2 * 32, 32, 32);
+	right.addFrame(0 * 32, 2 * 32, 32, 32);
+	right.addFrame(1 * 32, 2 * 32, 32, 32);
+	right.addFrame(2 * 32, 2 * 32, 32, 32);
 
-	move = down;
+	move = &down;
 }
 
 void Player::movement(){
@@ -105,7 +105,9 @@ void Player::movement(){
 }
 
 void Player::dash(float angle){
-	if(gameState->core->inputManager.LEFT_CLICK.isClicked() && !dashing){
+	Input inputManager = gameState->core->inputManager;
+
+	if(inputManager.LEFT_CLICK.isClicked() && !dashing){
 		dashing = true;
 		float dashSpeed = 15.0;
 		distanceTraveled = 0.0;
@@ -133,28 +135,28 @@ void Player::setAnimationDirection(float newAngle){
 		if(!dashing){
 			newAngle *= degrees;
 			if(newAngle < 0) newAngle += 360;
-			if(newAngle < 135 && newAngle > 45) move = down;
-			else if(newAngle  < 315 && newAngle > 225) move = up;
-			else if((newAngle < 360 && newAngle > 315) || (newAngle > 0 && newAngle < 45)) move = right;
-			else if(newAngle > 135 && newAngle < 225) move = left;
+			if(newAngle < 135 && newAngle > 45) move = &down;
+			else if(newAngle  < 315 && newAngle > 225) move = &up;
+			else if((newAngle < 360 && newAngle > 315) || (newAngle > 0 && newAngle < 45)) move = &right;
+			else if(newAngle > 135 && newAngle < 225) move = &left;
 		}
 	}
 }
 
 void Player::setSwordPos(){
-	if(move == down){
+	if(move == &down){
 		sword.setPosition(this->x, this->y + 20);
 		sword.setRotation(180);
 	}
-	else if(move == up){
+	else if(move == &up){
 		sword.setPosition(this->x, this->y - 20);
 		sword.setRotation(0);
 	}
-	else if(move == right){
+	else if(move == &right){
 		sword.setPosition(this->x + 20, this->y);
 		sword.setRotation(90);
 	}
-	else if(move == left){
+	else if(move == &left){
 		sword.setPosition(this->x - 20, this->y);
 		sword.setRotation(270);
 	}
@@ -169,7 +171,7 @@ void Player::enemyCollision(float angleTrajectory){
 				angleTrajectory *= degrees;
 				float temp = atan2(enemy->y - this->y, enemy->x - this->x) * degrees;
 				if(temp < (angleTrajectory) + (range) && temp > (angleTrajectory) - (range)){
-					gameState->spawnParticle(enemy->sprite.getPosition().x, enemy->sprite.getPosition().y, angleTrajectory);
+					//gameState->spawnParticle(enemy->sprite.getPosition().x, enemy->sprite.getPosition().y, angleTrajectory);
 					enemy->remove();
 					gameState->sounds.slashes[rand() % 2].play();
 				}
